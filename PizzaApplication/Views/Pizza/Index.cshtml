@@ -1,0 +1,155 @@
+﻿@model IEnumerable<PizzaApplication.Models.Pizza>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<div class="row">
+    <h2>Pizzas</h2>
+    <div class="col-sm-6">
+        <div class="row">
+            <div class="col-sm-4">
+                <h4>Pizza Name</h4>
+            </div>
+            <div class="col-sm-4">
+                <labal for="pizzaSize"><h4>Pick Size</h4></labal>
+            </div>
+            <div class="col-sm-4">
+
+            </div>
+        </div>
+
+        @foreach (var item in Model)
+        {
+            using (Html.BeginForm("UpdateBasket", "Order"))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => item.PizzaId)
+                <div class="row">
+                    <div class="col-sm-4">
+                        @Html.DisplayFor(modelItem => item.PizzaName)
+                    </div>
+                    <div class="col-sm-4">
+                        <select name="size" id="pizzaSize">
+                            <option value="Small">Small - £@item.SmallPrice</option>
+                            <option value="Medium">Medium - £@item.MediumPrice</option>
+                            <option value="Large">Large - £@item.LargePrice</option>
+                        </select> 
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" value="Add To Basket" name="submit" class="btn btn-default" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            <hr />
+        }
+    </div>
+    <div class="col-sm-1"></div>
+    <div class="col-sm-5">
+        <h2>Basket</h2>
+        @if (ViewBag.Basket.pizzasInBasket.Count > 0)
+        {
+            foreach (PizzaApplication.Models.OrderPizza pizza in ViewBag.Basket.pizzasInBasket)
+            {
+                using (Html.BeginForm("UpdateBasket", "Order"))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(model => pizza.OrderPizzaId)
+                    <div class="row">
+                        <div class="col-sm-4">
+                            @pizza.Pizza.PizzaName
+                        </div>
+                        <div class="col-sm-2">
+                            @pizza.PizzaSize
+                        </div>
+                        <div class="col-sm-2">
+                            £@pizza.Price
+                        </div>
+                        @Html.Hidden("requestUrl", Request.RawUrl)
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input type="submit" value="Remove" name="submit" class="btn btn-default" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                }
+            }
+            foreach (PizzaApplication.Models.OrderVoucher discount in ViewBag.Basket.orderVouchers)
+            {
+                <div class="row">
+                    <div class="col-sm-4">
+                    </div>
+                    <div class="col-sm-2">
+                        @discount.Voucher.VoucherName
+                    </div>
+                    <div class="col-sm-2">
+                        -£@discount.DiscountApplied
+                    </div>
+
+                    <div class="col-sm-4">
+
+                    </div>
+                </div>
+                <hr />
+            }
+            <div class="row">
+                <div class="col-sm-4"></div>
+                <div class="col-sm-2">Total:</div>
+                <div class="col-sm-2">£@ViewBag.Basket.totalPrice</div>
+                <div class="col-sm-4"></div>
+            </div>
+            <hr />
+            using (Html.BeginForm("Index", "Order"))
+            {
+                <div class="row">
+                    <div class="col-sm-8">
+                        <labal for="collectionDelivery">Collection/Delivery:</labal>
+                        <select name="collectionDelivery" id="collectionDelivery">
+                            <option value="Collection" @if (ViewBag.Basket.deliveryCollection == "Collection") { 
+                                                           @: selected 
+                                    }>Collection</option>
+                            <option value="Delivery" @if (ViewBag.Basket.deliveryCollection == "Delivery") { 
+                                                         @: selected 
+                                                         }>Delivery</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" value="Checkout" name="submit" class="btn btn-default" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="row">
+                <div class="col-sm-12">
+                    <p>Your Basket is currently empty.</p>
+                </div>
+            </div>
+        }
+        <div class="row">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-4">
+                @if (ViewBag.Basket.pizzasInBasket.Count > 0)
+                {
+                    @Html.ActionLink("Save Order", "SaveOrder", "Order")
+                }
+            </div>
+            <div class="col-sm-4">@Html.ActionLink("Retrive Order", "RetriveOrder", "Order")</div>
+            <div class="col-sm-2"></div>
+        </div>
+        
+    </div>
+</div>

@@ -1,0 +1,70 @@
+{
+    "environmentSettings": {
+        "cloudService": {
+            "name": "CSlowikPizza",
+            "affinityGroup": "",
+            "location": "West Europe",
+            "virtualNetwork": "",
+            "subnet": "",
+            "availabilitySet": "",
+            "virtualMachine": {
+                "name": "CSlowikPizza",
+                "vhdImage": "0c0083a6d9a24f2d91800e52cad83950__Oracle-Database-12.1.0.2.0-20160130-SE-Win-GA",
+                "size": "Standard_D12",
+                "user": "Mini_Me1903",
+                "password": "",
+                "endpoints": [
+                    {
+                        "name": "Http",
+                        "protocol": "TCP",
+                        "publicPort": "80",
+                        "privatePort": "80"
+                    },
+                    {
+                        "name": "Https",
+                        "protocol": "TCP",
+                        "publicPort": "443",
+                        "privatePort": "443"
+                    },
+                    {
+                        "name": "WebDeploy",
+                        "protocol": "TCP",
+                        "publicPort": "8172",
+                        "privatePort": "8172"
+                    },
+                    {
+                        "name": "Remote Desktop",
+                        "protocol": "TCP",
+                        "publicPort": "3389",
+                        "privatePort": "3389"
+                    },
+                    {
+                        "name": "Powershell",
+                        "protocol": "TCP",
+                        "publicPort": "5986",
+                        "privatePort": "5986"
+                    }
+                ],
+                "enableWebDeployExtension": true,
+                "isVMImage": false,
+                "isGeneralizedImage": true,
+                "dockerServerPortKey": "",
+                "dockerCACertFilePathKey": "",
+                "dockerServerCertFilePathKey": "",
+                "dockerServerKeyFilePathKey": ""
+            }
+        },
+        "databases": [
+            {
+                "connectionStringName": "",
+                "databaseName": "",
+                "serverName": "",
+                "user": "",
+                "password": ""
+            }
+        ],
+        "webDeployParameters": {
+            "iisWebApplicationName": "Default Web Site"
+        }
+    }
+}

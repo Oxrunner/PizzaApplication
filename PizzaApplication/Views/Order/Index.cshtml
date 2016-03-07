@@ -1,0 +1,98 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Your Basket</h2>
+    <h2>Basket</h2>
+    @if (ViewBag.Basket.pizzasInBasket.Count > 0)
+    {
+        foreach (PizzaApplication.Models.OrderPizza pizza in ViewBag.Basket.pizzasInBasket)
+        {
+            using (Html.BeginForm("UpdateBasket", "Order"))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => pizza.OrderPizzaId)
+                <div class="row">
+                    <div class="col-sm-4">
+                        @pizza.Pizza.PizzaName
+                    </div>
+                    <div class="col-sm-2">
+                        @pizza.PizzaSize
+                    </div>
+                    <div class="col-sm-2">
+                        £@pizza.Price
+                    </div>
+                    @Html.Hidden("requestUrl", Request.RawUrl)
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" value="Remove" name="submit" class="btn btn-default" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+            }
+        }
+        foreach (PizzaApplication.Models.OrderVoucher discount in ViewBag.Basket.orderVouchers)
+        {
+            <div class="row">
+                <div class="col-sm-4">
+                 </div>
+                 <div class="col-sm-2">
+                    @discount.Voucher.VoucherName
+                 </div>
+                 <div class="col-sm-2">
+                    -£@discount.DiscountApplied
+                  </div>
+
+                    <div class="col-sm-4">
+
+                    </div>
+                </div>
+                <hr />
+        }
+        <div class="row">
+            <div class="col-sm-4">For: @ViewBag.Basket.deliveryCollection</div>
+            <div class="col-sm-2">Total:</div>
+            <div class="col-sm-2">£@ViewBag.Basket.totalPrice</div>
+            @if (ViewBag.Basket.deliveryCollection != null)
+            {
+                <div class="col-sm-4">@Html.ActionLink("Place Order", "PlaceOrder")</div>
+            }
+            else
+            {
+                <div class="col-sm-4">You have not said weather this order is for delivery or collection.</div>
+            }
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-6">
+                @using (Html.BeginForm("ApplyVoucher", "Order"))
+                {
+                    @Html.AntiForgeryToken()
+                    <label for="voucherCode">Voucher Code:</label>
+                    <input name="voucherCode" type="text" id="voucherCode"/>
+                    <input type="submit" value="Apply Voucher" name="submit" class="btn btn-default" />
+                }
+            </div>
+            <div class="col-sm-3"></div>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-sm-12">
+                <p>Your Basket is currently empty.</p>
+            </div>
+        </div>
+    }
+
+
+
+
+
+
+
