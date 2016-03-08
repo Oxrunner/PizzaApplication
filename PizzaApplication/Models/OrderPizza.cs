@@ -13,6 +13,8 @@ namespace PizzaApplication.Models
 
         public String PizzaSize { get; set; }
 
+        public String Toppings { get; set; }
+
 
         [ForeignKey("Order")]
         public int OrderRefId { get; set; }

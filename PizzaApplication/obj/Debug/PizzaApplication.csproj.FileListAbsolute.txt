@@ -123,3 +123,5 @@ C:\Users\Chris\OneDrive\Documents\Visual Studio 2013\Projects\PizzaApplication\P
 C:\Users\Chris\OneDrive\Documents\Visual Studio 2013\Projects\PizzaApplication\PizzaApplication\obj\Debug\PizzaApplication.Migrations.addVouchersTableAndSeed.resources
 C:\Users\Chris\OneDrive\Documents\Visual Studio 2013\Projects\PizzaApplication\PizzaApplication\obj\Debug\PizzaApplication.Migrations.linkOrderAndVoucherTogeather.resources
 C:\Users\Chris\OneDrive\Documents\Visual Studio 2013\Projects\PizzaApplication\PizzaApplication\obj\Debug\PizzaApplication.Migrations.AddNewOrderVouchersTable.resources
+C:\Users\Chris\OneDrive\Documents\Visual Studio 2013\Projects\PizzaApplication\PizzaApplication\obj\Debug\PizzaApplication.Migrations.reseedDB.resources
+C:\Users\Chris\OneDrive\Documents\Visual Studio 2013\Projects\PizzaApplication\PizzaApplication\obj\Debug\PizzaApplication.Migrations.AddingToppingFieldToOrderPizza.resources

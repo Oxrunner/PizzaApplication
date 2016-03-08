@@ -85,9 +85,9 @@ namespace PizzaApplication.Models
             context.SaveChanges();
         }
 
-        public void addToBasket(String pizzaSize, int pizzaId)
+        public void addToBasket(String pizzaSize, int pizzaId, String toppings="")
         {
-            createNewItem(pizzaId, orderId, pizzaSize);
+            createNewItem(pizzaId, orderId, pizzaSize, toppings);
         }
 
         public void removeOrderFromBasket(int orderPizzaId)
@@ -151,15 +151,39 @@ namespace PizzaApplication.Models
             }
         }
 
-        private void createNewItem(int pizzaId, int orderId, String size)
+        private void createNewItem(int pizzaId, int orderId, String size, String toppings="")
         {
             OrderPizza newItem = new OrderPizza();
             newItem.PizzaRefId = pizzaId;
             newItem.OrderRefId = orderId;
             newItem.PizzaSize = size;
-            newItem.Price = getPizzaPrice(size, pizzaId);
+            newItem.Toppings = toppings;
+            newItem.Price = getPizzaPrice(size, pizzaId) + calculateExtraToppingPrice(size, toppings);
             context.OrderPizzas.Add(newItem);
             context.SaveChanges();
+        }
+
+        private decimal calculateExtraToppingPrice(String size, String toppings)
+        {
+            decimal toppingPrice = 0.00m;
+            if (size == "Small")
+            {
+                toppingPrice = 0.90m;
+            }
+            else if (size == "Medium")
+            {
+                toppingPrice = 1.00m;
+            }
+            else if (size == "Large")
+            {
+                toppingPrice = 1.15m;
+            }
+            if (toppings != "" && toppings != null)
+            {
+                String[] extraToppings = toppings.Split(',');
+                return toppingPrice * extraToppings.Length;
+            }
+            return 0.00m;
         }
 
         private void removeOrderItems(int orderId)

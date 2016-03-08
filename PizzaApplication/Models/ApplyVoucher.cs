@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 
@@ -76,9 +77,9 @@ namespace PizzaApplication.Models
                 String[] sizes = voucherCost.Split(' ');
                 if (sizes.Length == 2)
                 {
-                    if (decimal.TryParse(voucherCost, out voucherCostDecimal))
+                    if (decimal.TryParse(sizes[1], out voucherCostDecimal))
                     {
-                        discountAmount = getCostOfPizza(items) - figureOutDiscountAmmount(items, sizes[0], voucherCostDecimal);
+                        discountAmount = figureOutDiscountAmmount(items, sizes[0], voucherCostDecimal);
                     }
                 }
             }
@@ -88,7 +89,6 @@ namespace PizzaApplication.Models
         private decimal figureOutDiscountAmmount(List<OrderPizza> items, String highestLowest, decimal numberOfPizzas)
         {
             decimal discountAmmount = 0.00m;
-
             if (highestLowest == "highest")
             {
                 List<decimal> pizzaPrices = new List<decimal>();
@@ -107,8 +107,8 @@ namespace PizzaApplication.Models
                 {
                     discountAmmount += pizzaPrice;
                 }
-            } 
-
+            }
+            Debug.Write(discountAmmount+"\n\n");
             return discountAmmount;
         }
 

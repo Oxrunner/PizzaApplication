@@ -69,11 +69,10 @@ namespace PizzaApplication.Controllers
         [HttpPost]
         public ActionResult UpdateBasket()
         {
-            Debug.Write(Request["requestUrl"]+"\n\n\n");
             Basket basket = new Basket();
             if (Request["submit"] == "Add To Basket")
             {
-                basket.addToBasket(Request["size"], Int32.Parse(Request["item.PizzaId"].ToString()));
+                basket.addToBasket(Request["size"], Int32.Parse(Request["item.PizzaId"].ToString()), Request["toppings"]);
             }
             else if (Request["submit"] == "Remove")
             {

@@ -20,6 +20,7 @@ namespace PizzaApplication.Controllers
         {
             Basket basket = new Basket();
             ViewBag.Basket = basket;
+            ViewBag.Toppings = context.Toppings.ToList();
             return View(context.Pizzas.ToList());
         }
 

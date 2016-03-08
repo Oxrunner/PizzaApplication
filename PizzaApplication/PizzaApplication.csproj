@@ -211,6 +211,14 @@
     <Compile Include="Migrations\201603071616401_AddNewOrderVouchersTable.Designer.cs">
       <DependentUpon>201603071616401_AddNewOrderVouchersTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603081552559_reseedDB.cs" />
+    <Compile Include="Migrations\201603081552559_reseedDB.Designer.cs">
+      <DependentUpon>201603081552559_reseedDB.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603081725470_AddingToppingFieldToOrderPizza.cs" />
+    <Compile Include="Migrations\201603081725470_AddingToppingFieldToOrderPizza.Designer.cs">
+      <DependentUpon>201603081725470_AddingToppingFieldToOrderPizza.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplyVoucher.cs" />
@@ -332,6 +340,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603071616401_AddNewOrderVouchersTable.resx">
       <DependentUpon>201603071616401_AddNewOrderVouchersTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603081552559_reseedDB.resx">
+      <DependentUpon>201603081552559_reseedDB.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603081725470_AddingToppingFieldToOrderPizza.resx">
+      <DependentUpon>201603081725470_AddingToppingFieldToOrderPizza.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
