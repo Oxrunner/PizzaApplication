@@ -68,15 +68,58 @@ namespace PizzaApplication.Models
 
             if (decimal.TryParse(voucherCost, out voucherCostDecimal))
             {
-                decimal costOfPizzas = 0.00m;
+
+                discountAmount = getCostOfPizza(items) - voucherCostDecimal;
+            }
+            else
+            {
+                String[] sizes = voucherCost.Split(' ');
+                if (sizes.Length == 2)
+                {
+                    if (decimal.TryParse(voucherCost, out voucherCostDecimal))
+                    {
+                        discountAmount = getCostOfPizza(items) - figureOutDiscountAmmount(items, sizes[0], voucherCostDecimal);
+                    }
+                }
+            }
+            return discountAmount;
+        }
+
+        private decimal figureOutDiscountAmmount(List<OrderPizza> items, String highestLowest, decimal numberOfPizzas)
+        {
+            decimal discountAmmount = 0.00m;
+
+            if (highestLowest == "highest")
+            {
+                List<decimal> pizzaPrices = new List<decimal>();
+                int count = 0;
                 foreach (OrderPizza item in items)
                 {
-                    costOfPizzas += item.Price;
+                    pizzaPrices.Add(item.Price);
+                    count++;
                 }
-                discountAmount = costOfPizzas - voucherCostDecimal;
-            }
+                pizzaPrices.Sort();
+                for (int i = 0; i < numberOfPizzas; i++)
+                {
+                    pizzaPrices.RemoveAt(pizzaPrices.Count-1);
+                }
+                foreach (Decimal pizzaPrice in pizzaPrices)
+                {
+                    discountAmmount += pizzaPrice;
+                }
+            } 
 
-            return discountAmount;
+            return discountAmmount;
+        }
+
+        private decimal getCostOfPizza(List<OrderPizza> items)
+        {
+            decimal costOfPizzas = 0.00m;
+            foreach (OrderPizza item in items)
+            {
+                costOfPizzas += item.Price;
+            }
+            return costOfPizzas;
         }
 
         private Dictionary<String, List<OrderPizza>> groupPizzasBySize()
