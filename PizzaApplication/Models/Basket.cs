@@ -12,7 +12,7 @@ namespace PizzaApplication.Models
 {
     public class Basket
     {
-        PizzaStoreContext context = new PizzaStoreContext();
+        PizzaStoreContext context;
         private String cacheKey = "PizzaOrder";
         private static MemoryCache cache = new MemoryCache("PizzaCache");
         private int orderId;
@@ -24,8 +24,9 @@ namespace PizzaApplication.Models
         public List<OrderVoucher> orderVouchers;
         
 
-        public Basket(int orderIdPassed = 0)
+        public Basket(PizzaStoreContext contextPassed, int orderIdPassed = 0)
         {
+            context = contextPassed;
             if (orderIdPassed == 0)
             {
                 if (cache.Get(cacheKey) == null)
@@ -51,7 +52,7 @@ namespace PizzaApplication.Models
         private void getOrderVouchers()
         {
             List<OrderVoucher> vouchersToCheck = context.OrderVouchers.Include(op => op.Voucher).Where(op => op.OrderId == orderId).ToList();
-            ApplyVoucher applyVoucher = new ApplyVoucher(orderId, pizzasInBasket, deliveryCollection);
+            ApplyVoucher applyVoucher = new ApplyVoucher(context, orderId, pizzasInBasket, deliveryCollection);
             foreach (OrderVoucher voucherDetails in vouchersToCheck)
             {
                 try
@@ -78,7 +79,7 @@ namespace PizzaApplication.Models
         {
             try
             {
-                ApplyVoucher applyVoucher = new ApplyVoucher(orderId, pizzasInBasket, deliveryCollection);
+                ApplyVoucher applyVoucher = new ApplyVoucher(context, orderId, pizzasInBasket, deliveryCollection);
                 applyVoucher.applyVoucher(voucherCode);
                 return "Voucher successfully applied.";
             } catch(System.InvalidVoucher ex){

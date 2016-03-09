@@ -18,7 +18,7 @@ namespace PizzaApplication.Controllers
 
         public ActionResult Index()
         {
-            Basket basket = new Basket();
+            Basket basket = new Basket(context);
             ViewBag.Basket = basket;
             ViewBag.Toppings = context.Toppings.ToList();
             return View(context.Pizzas.ToList());

@@ -8,13 +8,14 @@ namespace PizzaApplication.Models
 {
     public class ApplyVoucher
     {
-        PizzaStoreContext context = new PizzaStoreContext();
+        PizzaStoreContext context;
         private int orderId;
         public List<OrderPizza> pizzasInBasket;
         public String deliveryCollection;
 
-        public ApplyVoucher(int passedOrderId, List<OrderPizza> passedPizzasInBasket, String deliveryCollectionPassed)
+        public ApplyVoucher(PizzaStoreContext contextPassed, int passedOrderId, List<OrderPizza> passedPizzasInBasket, String deliveryCollectionPassed)
         {
+            context = contextPassed;
             orderId = passedOrderId;
             pizzasInBasket = passedPizzasInBasket;
             deliveryCollection = deliveryCollectionPassed;

@@ -14,12 +14,12 @@ namespace PizzaApplication.Models
 
         }
 
-        public DbSet<Pizza> Pizzas { get; set; }
-        public DbSet<Toppings> Toppings { get; set; }
-        public DbSet<Order> Orders { get; set; }
-        public DbSet<OrderPizza> OrderPizzas { get; set; }
-        public DbSet<PlacedOrders> PlacedOrders { get; set; }
-        public DbSet<Voucher> Vouchers { get; set; }
-        public DbSet<OrderVoucher> OrderVouchers { get; set; }
+        public virtual DbSet<Pizza> Pizzas { get; set; }
+        public virtual DbSet<Toppings> Toppings { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<OrderPizza> OrderPizzas { get; set; }
+        public virtual DbSet<PlacedOrders> PlacedOrders { get; set; }
+        public virtual DbSet<Voucher> Vouchers { get; set; }
+        public virtual DbSet<OrderVoucher> OrderVouchers { get; set; }
     }
 }

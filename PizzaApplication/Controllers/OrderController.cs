@@ -12,11 +12,12 @@ namespace PizzaApplication.Controllers
 {
     public class OrderController : Controller
     {
+        PizzaStoreContext context = new PizzaStoreContext();
 
         [Authorize]
         public ActionResult Index()
         {
-            Basket basket = new Basket();
+            Basket basket = new Basket(context);
             if (Request["submit"] == "Apply Voucher")
             {
                 if (Request["voucherCode"] != null)
@@ -28,7 +29,7 @@ namespace PizzaApplication.Controllers
             {
                 basket.setDeliveryCollection(Request["collectionDelivery"]);
             }
-            basket = new Basket();
+            basket = new Basket(context);
             ViewBag.Basket = basket;
             return View();
         }
@@ -36,7 +37,7 @@ namespace PizzaApplication.Controllers
         [Authorize]
         public ActionResult SaveOrder()
         {
-            Basket basket = new Basket();
+            Basket basket = new Basket(context);
             basket.saveOrder(User.Identity.GetUserId());
             return RedirectToAction("Index", "Pizza");
         }
@@ -44,7 +45,7 @@ namespace PizzaApplication.Controllers
         [Authorize]
         public ActionResult RetriveOrder()
         {
-            Basket basket = new Basket();
+            Basket basket = new Basket(context);
             basket.retriveOrder(User.Identity.GetUserId());
             return RedirectToAction("Index", "Pizza");
         }
@@ -52,7 +53,7 @@ namespace PizzaApplication.Controllers
         [Authorize]
         public ActionResult PlaceOrder()
         {
-            Basket basket = new Basket();
+            Basket basket = new Basket(context);
             if (basket.pizzasInBasket.Count <= 0)
             {
                 return RedirectToAction("Index", "Pizza");
@@ -64,14 +65,14 @@ namespace PizzaApplication.Controllers
         [HttpPost]
         public ActionResult UpdateBasket()
         {
-            Basket basket = new Basket();
+            Basket basket = new Basket(context);
             if (Request["submit"] == "Add To Basket")
             {
                 basket.addToBasket(Request["size"], Int32.Parse(Request["item.PizzaId"].ToString()), Request["toppings"]);
             }
             else if (Request["submit"] == "Remove")
             {
-                basket.removeOrderFromBasket(Int32.Parse(Request["pizza.OrderPizzaId"].ToString()));
+                basket.removeOrderFromBasket(Int32.Parse(Request["OrderPizzaId"].ToString()));
             }
             if (Request["requestUrl"] == "/Order" || Request["requestUrl"] == "/Order/Index")
             {

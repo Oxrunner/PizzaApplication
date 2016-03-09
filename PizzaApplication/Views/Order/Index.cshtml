@@ -12,7 +12,7 @@
             using (Html.BeginForm("UpdateBasket", "Order"))
             {
                 @Html.AntiForgeryToken()
-                @Html.Hidden("item.PizzaId", pizza.OrderPizzaId, new { @id = "pizzaOrderId" + pizza.OrderPizzaId })
+                @Html.Hidden("OrderPizzaId", pizza.OrderPizzaId, new { @id = "pizzaOrderId" + pizza.OrderPizzaId })
                 <div class="row">
                     <div class="col-sm-4">
                         @pizza.Pizza.PizzaName
