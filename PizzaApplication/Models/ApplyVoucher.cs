@@ -11,27 +11,46 @@ namespace PizzaApplication.Models
         PizzaStoreContext context = new PizzaStoreContext();
         private int orderId;
         public List<OrderPizza> pizzasInBasket;
+        public String deliveryCollection;
 
-        public ApplyVoucher(int passedOrderId, List<OrderPizza> passedPizzasInBasket)
+        public ApplyVoucher(int passedOrderId, List<OrderPizza> passedPizzasInBasket, String deliveryCollectionPassed)
         {
             orderId = passedOrderId;
             pizzasInBasket = passedPizzasInBasket;
+            deliveryCollection = deliveryCollectionPassed;
+        }
+
+        public void applyVoucher(String voucherCode)
+        {
+            List<Voucher> vouchersFound = context.Vouchers.Where(op => op.VoucherCode == voucherCode).ToList();
+            if (vouchersFound.Count == 1)
+            {
+                Voucher voucherDetails = vouchersFound[0];
+                applyDiscount(voucherDetails);
+            }
+            else
+            {
+                throw new System.InvalidVoucher();
+            }
         }
         
         public void applyDiscount(Voucher voucherDetails)
         {
             clearVouchersAlreadyOnOrder(voucherDetails.VoucherId);
             checkDay(voucherDetails.DayValid);
+            checkDeliveryCollection(voucherDetails.CollectionDelivery);
             if (pizzasInBasket.Count >= voucherDetails.numberOfPizzas)
             {
                 Dictionary<String, List<OrderPizza>> pizzasGroupedBySize = groupPizzasBySize();
                 String[] sizes = voucherDetails.SizeOfPizza.Split('/');
+                int check = 0;
                 foreach (String size in sizes)
                 {
                     if (pizzasGroupedBySize.ContainsKey(size))
                     {
                         while (pizzasGroupedBySize[size].Count >= voucherDetails.numberOfPizzas)
                         {
+                            check = 1;
                             OrderVoucher newOrderVoucher = new OrderVoucher();
                             newOrderVoucher.VoucherId = voucherDetails.VoucherId;
                             newOrderVoucher.OrderId = orderId;
@@ -49,7 +68,33 @@ namespace PizzaApplication.Models
                         }
                     }
                 }
+                if (check == 1)
+                {
+                    return;
+                }
+                throw new System.InvalidVoucher("Invalid pizzas in the basket for the selected deal.");
             }
+            else
+            {
+                throw new System.InvalidVoucher("Invalid number of pizzas in the basket.");
+            }
+        }
+
+        private Boolean checkDeliveryCollection(String deliveryCollectionPassed)
+        {
+            if (deliveryCollectionPassed != "" && deliveryCollectionPassed != null && deliveryCollection != "" && deliveryCollection != null)
+            {
+                String[] collectionDeliveryCheck = deliveryCollectionPassed.Split('/');
+                foreach (String colDil in collectionDeliveryCheck)
+                {
+                    if (colDil == deliveryCollection)
+                    {
+                        return true;
+                    }
+                }
+                throw new System.InvalidVoucher("The voucher entered may only be used on " + deliveryCollectionPassed + " orders");
+            }
+            return true;
         }
 
         private void clearVouchersAlreadyOnOrder(int voucherId)
@@ -144,7 +189,7 @@ namespace PizzaApplication.Models
                 String currentDay = System.DateTime.Now.DayOfWeek.ToString();
                 if (currentDay != validDay)
                 {
-                    return false;
+                    throw new System.InvalidVoucher("That voucher is only valid on " + validDay);
                 }
             }
             return true;

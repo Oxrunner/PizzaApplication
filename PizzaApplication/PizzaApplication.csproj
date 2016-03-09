@@ -219,11 +219,20 @@
     <Compile Include="Migrations\201603081725470_AddingToppingFieldToOrderPizza.Designer.cs">
       <DependentUpon>201603081725470_AddingToppingFieldToOrderPizza.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603091009363_AddAddressFieldToUserTable.cs" />
+    <Compile Include="Migrations\201603091009363_AddAddressFieldToUserTable.Designer.cs">
+      <DependentUpon>201603091009363_AddAddressFieldToUserTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603091013091_AddAddressField.cs" />
+    <Compile Include="Migrations\201603091013091_AddAddressField.Designer.cs">
+      <DependentUpon>201603091013091_AddAddressField.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplyVoucher.cs" />
     <Compile Include="Models\Basket.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\InvalidVoucher.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\OrderPizza.cs" />
@@ -346,6 +355,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603081725470_AddingToppingFieldToOrderPizza.resx">
       <DependentUpon>201603081725470_AddingToppingFieldToOrderPizza.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603091009363_AddAddressFieldToUserTable.resx">
+      <DependentUpon>201603091009363_AddAddressFieldToUserTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603091013091_AddAddressField.resx">
+      <DependentUpon>201603091013091_AddAddressField.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

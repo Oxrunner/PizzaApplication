@@ -12,7 +12,7 @@
             using (Html.BeginForm("UpdateBasket", "Order"))
             {
                 @Html.AntiForgeryToken()
-                @Html.HiddenFor(model => pizza.OrderPizzaId)
+                @Html.Hidden("item.PizzaId", pizza.OrderPizzaId, new { @id = "pizzaOrderId" + pizza.OrderPizzaId })
                 <div class="row">
                     <div class="col-sm-4">
                         @pizza.Pizza.PizzaName
@@ -23,7 +23,7 @@
                     <div class="col-sm-2">
                         £@pizza.Price
                     </div>
-                    @Html.Hidden("requestUrl", Request.RawUrl)
+                    @Html.Hidden("requestUrl", Request.RawUrl, new { @id = "requestUrl" + pizza.OrderPizzaId })
                     <div class="col-sm-4">
                         <div class="form-group">
                             <div class="col-md-offset-2 col-md-10">
@@ -75,8 +75,13 @@
         <hr />
         <div class="row">
             <div class="col-sm-3"></div>
+            <div class="col-sm-6"><p>@ViewBag.VoucherMessage</p></div>
+            <div class="col-sm-3"></div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3"></div>
             <div class="col-sm-6">
-                @using (Html.BeginForm("ApplyVoucher", "Order"))
+                @using (Html.BeginForm("Index", "Order"))
                 {
                     @Html.AntiForgeryToken()
                     <label for="voucherCode">Voucher Code:</label>

@@ -20,7 +20,7 @@ namespace PizzaApplication.Models
 
         public List<OrderPizza> pizzasInBasket;
         public decimal totalPrice = 0.00m;
-        public String deliveryCollection;
+        public String deliveryCollection = "";
         public List<OrderVoucher> orderVouchers;
         
 
@@ -51,10 +51,18 @@ namespace PizzaApplication.Models
         private void getOrderVouchers()
         {
             List<OrderVoucher> vouchersToCheck = context.OrderVouchers.Include(op => op.Voucher).Where(op => op.OrderId == orderId).ToList();
-            ApplyVoucher applyVoucher = new ApplyVoucher(orderId, pizzasInBasket);
+            ApplyVoucher applyVoucher = new ApplyVoucher(orderId, pizzasInBasket, deliveryCollection);
             foreach (OrderVoucher voucherDetails in vouchersToCheck)
             {
-                applyVoucher.applyDiscount(voucherDetails.Voucher);
+                try
+                {
+                    applyVoucher.applyDiscount(voucherDetails.Voucher);
+                }
+                catch (System.InvalidVoucher)
+                {
+
+                }
+                
             }
 
             orderVouchers = context.OrderVouchers.Include(op => op.Voucher).Where(op => op.OrderId == orderId).ToList();
@@ -66,14 +74,15 @@ namespace PizzaApplication.Models
             totalPrice = totalPrice - totalDiscount;
         }
 
-        public void applyVoucher(String voucherCode)
+        public String applyVoucher(String voucherCode)
         {
-            List<Voucher> vouchersFound = context.Vouchers.Where(op => op.VoucherCode == voucherCode).ToList();
-            if (vouchersFound.Count == 1)
+            try
             {
-                Voucher voucherDetails = vouchersFound[0];
-                ApplyVoucher applyVoucher = new ApplyVoucher(orderId, pizzasInBasket);
-                applyVoucher.applyDiscount(voucherDetails);
+                ApplyVoucher applyVoucher = new ApplyVoucher(orderId, pizzasInBasket, deliveryCollection);
+                applyVoucher.applyVoucher(voucherCode);
+                return "Voucher successfully applied.";
+            } catch(System.InvalidVoucher ex){
+                return ex.Message;
             }
         }
 
@@ -93,8 +102,11 @@ namespace PizzaApplication.Models
         public void removeOrderFromBasket(int orderPizzaId)
         {
             OrderPizza orderPizza = context.OrderPizzas.Find(orderPizzaId);
-            context.OrderPizzas.Remove(orderPizza);
-            context.SaveChanges();
+            if (orderPizza != null)
+            {
+                context.OrderPizzas.Remove(orderPizza);
+                context.SaveChanges();
+            }
         }
 
         public void submitOrder(String userId)
@@ -119,12 +131,12 @@ namespace PizzaApplication.Models
             else
             {
                 removeMultipleSavedOrders(orderList);
-                savedOrderId = createNewOrder();
+                savedOrderId = createNewOrder(userId);
             }
 
             List<OrderPizza> orderItems = context.OrderPizzas.Where(op => op.OrderRefId == orderId).ToList();
             foreach(OrderPizza item in orderItems){
-                createNewItem(item.PizzaRefId, savedOrderId, item.PizzaSize);
+                createNewItem(item.PizzaRefId, savedOrderId, item.PizzaSize, item.Toppings);
             }
         }
 
@@ -138,7 +150,7 @@ namespace PizzaApplication.Models
                 List<OrderPizza> orderItems = context.OrderPizzas.Where(op => op.OrderRefId == savedOrderId).ToList();
                 foreach (OrderPizza item in orderItems)
                 {
-                    createNewItem(item.PizzaRefId, orderId, item.PizzaSize);
+                    createNewItem(item.PizzaRefId, orderId, item.PizzaSize, item.Toppings);
                 }
             }
             else if (order.Count == 0)
@@ -206,9 +218,13 @@ namespace PizzaApplication.Models
             }
         }
 
-        private int createNewOrder()
+        private int createNewOrder(String userId="")
         {
             Order newOrder = new Order();
+            if (userId != "")
+            {
+                newOrder.userId = userId;
+            }
             context.Orders.Add(newOrder);
             context.SaveChanges();
             return newOrder.OrderId;

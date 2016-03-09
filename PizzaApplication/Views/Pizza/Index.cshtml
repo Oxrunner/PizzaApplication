@@ -13,7 +13,7 @@
                 <h4>Pizza Name</h4>
             </div>
             <div class="col-sm-4">
-                <labal for="pizzaSize"><h4>Pick Size</h4></labal>
+                <h4>Pick Size</h4>
             </div>
             <div class="col-sm-4">
 
@@ -25,13 +25,13 @@
             using (Html.BeginForm("UpdateBasket", "Order"))
             {
                 @Html.AntiForgeryToken()
-                @Html.HiddenFor(model => item.PizzaId)
+                @Html.Hidden("item.PizzaId", item.PizzaId, new { @id = "pizzaId" + item.PizzaId })
                 <div class="row">
                     <div class="col-sm-4">
                         @Html.DisplayFor(modelItem => item.PizzaName)
                     </div>
                     <div class="col-sm-4">
-                        <select name="size" id="pizzaSize">
+                        <select name="size">
                             <option value="Small">Small - £@item.SmallPrice</option>
                             <option value="Medium">Medium - £@item.MediumPrice</option>
                             <option value="Large">Large - £@item.LargePrice</option>
@@ -51,8 +51,11 @@
                     {
                         <div class="row">
                             <div class="col-sm-12">
-                                @toppings.Name
-                                <input type="checkbox" name="toppings" value="@toppings.Name">
+                                @{
+                                    String toppingId = "topping" + toppings.Name.Replace(" ", "");
+                                }
+                                <label for="@toppingId">@toppings.Name</label>
+                                <input type="checkbox" name="toppings" id="@toppingId" value="@toppings.Name">
                             </div>
                         </div>
                     }
@@ -72,7 +75,7 @@
                 using (Html.BeginForm("UpdateBasket", "Order"))
                 {
                     @Html.AntiForgeryToken()
-                    @Html.HiddenFor(model => pizza.OrderPizzaId)
+                    @Html.Hidden("item.PizzaId", pizza.OrderPizzaId, new { @id = "pizzaOrderId" + pizza.OrderPizzaId })
                     <div class="row">
                         <div class="col-sm-4">
                             @pizza.Pizza.PizzaName
@@ -83,7 +86,7 @@
                         <div class="col-sm-2">
                             £@pizza.Price
                         </div>
-                        @Html.Hidden("requestUrl", Request.RawUrl)
+                        @Html.Hidden("requestUrl", Request.RawUrl, new { @id = "removeOrderUrl" + pizza.OrderPizzaId })
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <div class="col-md-offset-2 col-md-10">
@@ -130,7 +133,7 @@
             {
                 <div class="row">
                     <div class="col-sm-8">
-                        <labal for="collectionDelivery">Collection/Delivery:</labal>
+                        Collection/Delivery:
                         <select name="collectionDelivery" id="collectionDelivery">
                             <option value="Collection" @if (ViewBag.Basket.deliveryCollection == "Collection") { 
                                                            @: selected 

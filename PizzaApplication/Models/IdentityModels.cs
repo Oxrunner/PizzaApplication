@@ -16,6 +16,7 @@ namespace PizzaApplication.Models
             // Add custom user claims here
             return userIdentity;
         }
+        public string Address { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>

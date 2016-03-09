@@ -11,7 +11,6 @@ namespace PizzaApplication.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
-            ContextKey = "PizzaApplication.Models.PizzaStoreContext";
         }
 
         protected override void Seed(PizzaApplication.Models.PizzaStoreContext context)

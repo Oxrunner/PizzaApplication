@@ -17,10 +17,18 @@ namespace PizzaApplication.Controllers
         public ActionResult Index()
         {
             Basket basket = new Basket();
-            if (Request["collectionDelivery"] != null)
+            if (Request["submit"] == "Apply Voucher")
+            {
+                if (Request["voucherCode"] != null)
+                {
+                    ViewBag.VoucherMessage = basket.applyVoucher(Request["voucherCode"]);
+                }
+            }
+            else if (Request["collectionDelivery"] != null)
             {
                 basket.setDeliveryCollection(Request["collectionDelivery"]);
             }
+            basket = new Basket();
             ViewBag.Basket = basket;
             return View();
         }
@@ -31,19 +39,6 @@ namespace PizzaApplication.Controllers
             Basket basket = new Basket();
             basket.saveOrder(User.Identity.GetUserId());
             return RedirectToAction("Index", "Pizza");
-        }
-
-        [Authorize]
-        public ActionResult ApplyVoucher()
-        {
-            Basket basket = new Basket();
-            if (Request["voucherCode"] != null)
-            {
-                basket.applyVoucher(Request["voucherCode"]);
-                basket = new Basket();
-            }
-            ViewBag.Basket = basket;
-            return View("Index");
         }
 
         [Authorize]
